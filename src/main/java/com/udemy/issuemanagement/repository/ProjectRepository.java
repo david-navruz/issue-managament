@@ -5,23 +5,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
 import java.awt.print.Pageable;
 import java.util.List;
 
 @Repository
-public interface ProjectRepository extends JpaRepository<Project,Long> {
+public interface ProjectRepository extends JpaRepository<Project, Long> {
 
-    List<Project> getAllProjectByCode(String projectCode);
 
-    List<Project> getAllProjectByCodeAndIdNotNull(String projectCode);
+    Project getByProjectCode(String projectCode);
 
-    List<Project> getAllProjectByCodeAndProjectNameContains(String projectCode, String projectName);
+    Project getByProjectCodeAndIdNot(String projectCode, Long id);
+
+    List<Project> getByProjectCodeContains(String projectCode);
 
     Page<Project> findAll(Pageable pageable);
 
     List<Project> findAll(Sort sort);
-
-
 
 
 }

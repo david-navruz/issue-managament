@@ -6,11 +6,10 @@ import java.util.Date;
 
 @Entity
 @Table(name = "issue")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
 public class Issue extends BaseEntity {
 
     @Id
@@ -20,14 +19,14 @@ public class Issue extends BaseEntity {
     @Column(name = "description", length = 1000)
     private String description;
 
-    @Column(name = "details", length = 1000)
+    @Column(name = "details", length = 4000)
     private String details;
 
     @Column(name = "date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
-    @Column(name = "issueStatus")
+    @Column(name = "issue_status")
     @Enumerated(EnumType.STRING)
     private IssueStatus issueStatus;
 
@@ -35,8 +34,8 @@ public class Issue extends BaseEntity {
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private User assignee;
 
-
-
-
+    @JoinColumn(name = "project_id")
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    private Project project;
 
 }
