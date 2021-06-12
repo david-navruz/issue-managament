@@ -1,8 +1,7 @@
 package com.udemy.issuemanagement.service;
 
 import com.udemy.issuemanagement.dto.ProjectDto;
-import com.udemy.issuemanagement.entity.Project;
-import org.springframework.data.domain.Page;
+import com.udemy.issuemanagement.util.TPage;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -17,7 +16,7 @@ public interface ProjectService {
 
     List<ProjectDto> getByProjectCodeContains(String projectCode);
 
-    Page<ProjectDto> getAllPageable(Pageable pageable);
+    TPage<ProjectDto> getAllPageable(Pageable pageable);
 
     Boolean delete(ProjectDto project);
 

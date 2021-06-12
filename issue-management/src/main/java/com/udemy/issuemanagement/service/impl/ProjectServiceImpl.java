@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import com.udemy.issuemanagement.util.TPage;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -37,18 +39,19 @@ public class ProjectServiceImpl implements ProjectService {
         if(projectCheck != null){
             throw new IllegalArgumentException("Project Code Already Exist");
         }
-        Project p = modelMapper.map(project, Project.class);
+        Project proj = modelMapper.map(project, Project.class);
         User user = userRepository.getOne(project.getManagerId());
-        p.setm
-
-
-
-        return null;
+        proj.setManager(user);
+        // saving the project
+        proj = projectRepository.save(proj);
+        proj.setId(proj.getId());
+        return project;
     }
 
     @Override
     public ProjectDto getById(Long id) {
-        return null;
+        Project pro = projectRepository.getOne(id);
+        return modelMapper.map(pro, ProjectDto.class);
     }
 
     @Override
@@ -62,8 +65,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Page<ProjectDto> getAllPageable(Pageable pageable) {
-        return null;
+    public TPage<ProjectDto> getAllPageable(Pageable pageable) {
+        Page<Project> data = projectRepository.findAll(pageable);
+        TPage<ProjectDto> response = new TPage<ProjectDto>();
+        response.setStat(data, Arrays.asList(modelMapper.map(data.getContent(), ProjectDto[].class)));
+        return response;
     }
 
     @Override
@@ -71,9 +77,34 @@ public class ProjectServiceImpl implements ProjectService {
         return null;
     }
 
+
+    public Boolean delete(Long id) {
+        projectRepository.deleteById(id);
+        return true;
+    }
+
+
     @Override
     public ProjectDto update(Long id, ProjectDto project) {
-        return null;
+        Project projectDb = projectRepository.getOne(id);
+        if(projectDb == null){
+            throw new IllegalArgumentException("Project Does Not Exist ID:" + id);
+        }
+        // checking if the project already exists
+        Project projectCheck = projectRepository.getByProjectCodeAndIdNot(project.getProjectCode(), id);
+        if (projectCheck != null){
+            throw new IllegalArgumentException("Project Code Already Exist");
+        }
+        projectDb.setProjectCode(project.getProjectCode());
+        projectDb.setProjectName(project.getProjectName());
+        // saving the project
+        projectRepository.save(projectDb);
+        return modelMapper.map(projectDb, ProjectDto.class);
+    }
+
+    public List<ProjectDto> getAll() {
+        List<Project> data = projectRepository.findAll();
+        return Arrays.asList(modelMapper.map(data, ProjectDto[].class));
     }
 
 
