@@ -14,9 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Arrays;
 import java.util.List;
+
 
 @Service
 @Slf4j
@@ -50,20 +50,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public TPage<UserDto> getAllPageable(Pageable pageable) {
         Page<User> data = userRepository.findAll(pageable);
-        TPage<UserDto> response = new TPage<UserDto>();
-        response.setStat(data, Arrays.asList(modelMapper.map(data.getContent(), UserDto[].class)));
-        return response;
-    }
-
-    @Override
-    public UserDto getByUsername(String username) {
-        User u = userRepository.findByUsername(username);
-        return modelMapper.map(u, UserDto.class);
+        TPage<UserDto> respnose = new TPage<UserDto>();
+        respnose.setStat(data, Arrays.asList(modelMapper.map(data.getContent(), UserDto[].class)));
+        return respnose;
     }
 
     public List<UserDto> getAll() {
         List<User> data = userRepository.findAll();
         return Arrays.asList(modelMapper.map(data, UserDto[].class));
+    }
+
+
+    @Override
+    public UserDto getByUsername(String username) {
+        User u = userRepository.findByUsername(username);
+        return modelMapper.map(u, UserDto.class);
     }
 
     @Transactional
@@ -81,6 +82,4 @@ public class UserServiceImpl implements UserService {
             return Boolean.FALSE;
         }
     }
-
-
 }
