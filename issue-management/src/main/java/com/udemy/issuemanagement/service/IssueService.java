@@ -1,16 +1,21 @@
 package com.udemy.issuemanagement.service;
 
+import com.udemy.issuemanagement.dto.IssueDto;
 import com.udemy.issuemanagement.entity.Issue;
+import com.udemy.issuemanagement.util.TPage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface IssueService {
 
-    Issue save(Issue issue);
+    IssueDto save(IssueDto issue);
 
-    Issue getById(Long id);
+    IssueDto getById(Long id);
 
-    Page<Issue> getAllPageable(Pageable pageable);
+    TPage<IssueDto> getAllPageable(Pageable pageable);
 
+    Boolean delete(Long issue);
+
+    IssueDto update(Long id, IssueDto project);
 
 }

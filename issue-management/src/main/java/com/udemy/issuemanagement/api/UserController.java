@@ -1,6 +1,7 @@
 package com.udemy.issuemanagement.api;
 
 import com.udemy.issuemanagement.dto.UserDto;
+import com.udemy.issuemanagement.service.UserService;
 import com.udemy.issuemanagement.service.impl.UserServiceImpl;
 import com.udemy.issuemanagement.util.ApiPaths;
 import com.udemy.issuemanagement.util.TPage;
@@ -11,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.jws.soap.SOAPBinding;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -21,44 +21,40 @@ import java.util.List;
 @CrossOrigin
 public class UserController {
 
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserServiceImpl userServiceImpl) {
-        this.userServiceImpl = userServiceImpl;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping("/pagination")
+    @GetMapping("/user/pagination")
     @ApiOperation(value = "Get By Pagination Operation", response = UserDto.class)
-    public ResponseEntity<TPage<UserDto>> getAllPagination(Pageable pageable){
-        TPage<UserDto> data = userServiceImpl.getAllPageable(pageable);
+    public ResponseEntity<TPage<UserDto>> getAllPagination(Pageable pageable) {
+        TPage<UserDto> data = userService.getAllPageable(pageable);
         return ResponseEntity.ok(data);
     }
 
     @GetMapping()
     @ApiOperation(value = "Get All By Operation", response = UserDto.class)
-    public ResponseEntity<List<UserDto>> getAll(){
-        List<UserDto> data = userServiceImpl.getAll();
+    public ResponseEntity<List<UserDto>> getAll() {
+        List<UserDto> data = userService.getAll();
         return ResponseEntity.ok(data);
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     @ApiOperation(value = "Get By Id Operation", response = UserDto.class)
-    public ResponseEntity<UserDto> getById(@PathVariable(value = "id", required = true) Long id){
-        UserDto userDto = userServiceImpl.getById(id);
+    public ResponseEntity<UserDto> getById(@PathVariable(value = "id", required = true) Long id) {
+        UserDto userDto = userService.getById(id);
         return ResponseEntity.ok(userDto);
     }
 
-    @PostMapping
+    @PostMapping("create-user-project")
     @ApiOperation(value = "Create Operation", response = UserDto.class)
-    public ResponseEntity<UserDto> createProject(@Valid @RequestBody UserDto userDto){
-        return ResponseEntity.ok(userServiceImpl.save(userDto));
+    public ResponseEntity<UserDto> createProject(@Valid @RequestBody UserDto userDto) {
+        return ResponseEntity.ok(userService.save(userDto));
     }
-
-
-
-
 
 
 }

@@ -14,9 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Arrays;
 import java.util.List;
-
 
 @Service
 @Slf4j
@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
         return respnose;
     }
 
+    @Override
     public List<UserDto> getAll() {
         List<User> data = userRepository.findAll();
         return Arrays.asList(modelMapper.map(data, UserDto[].class));
@@ -68,6 +69,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
+    @Override
     public Boolean register(RegistrationRequest registrationRequest) {
         try {
             User user = new User();
